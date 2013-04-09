@@ -17,5 +17,7 @@ Usage
 
 To build and start DocR, clone this repo, cd into the project directory and type
 
-    lein do clean uberjar
-    java -jar target/docr-1.0.0-standalone.jar -d path-to-documents -p port
+    lein uberjar
+    java -jar target/docr-1.0.0-standalone.jar -d ./sample-data -p 8085
+
+Then start a web browser and enter http://localhost:8085 to open the home page of DocR.
