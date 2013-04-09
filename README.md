@@ -12,6 +12,10 @@ The filename of each document must have the format entity\_\_date\_\_subject.pdf
  - subject is some description of the documents contents.
 
 
+![DocR Homepage](screenshot.png)
+
+
+
 Usage
 -----
 
