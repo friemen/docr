@@ -1,0 +1,76 @@
+
+body {
+	font-family: helvetica,arial;
+	font-size: 10pt;
+}
+th {
+	font-size: 10pt;
+}
+td {
+	font-size: 10pt;
+}
+
+.PageHeader {
+	background-color: #a0a0e0;
+	color: #ffffff;
+	font-weight: bold;
+	line-height: 3em;
+	display: block;
+	padding: 4px;
+}
+.PageHeader img {
+	vertical-align: middle;
+}
+.PageHeader a {
+	color: #ffffff;
+	text-decoration: none;
+}
+.PageHeader a:hover {
+	color: #000000;
+}
+
+.Form {
+	border: 1px solid #a0a0a0;
+	background-color: #f0f0f0
+}
+
+.ResultTable th {
+	font-weight: normal;
+	background-color: #a0a0a0;
+	text-align: left;
+	padding: 2px;
+}
+.ResultTable td {
+  border: 1px solid #ffffff;
+  padding: 2px;
+}
+.ResultTable-OddRow {
+  background-color: #f0f0f0;
+}
+.ResultTable-EvenRow {
+  background-color:  #ffffff;
+}
+
+
+
+h1 {
+  font-size: 2em;
+  font-weight: bold;
+  color: #777777;
+  margin: 40px 0px 70px;
+  text-align: center;
+}
+
+.sendButton {
+  display: block;
+  font-size: 16pt;
+}
+
+.dialogVPanel {
+  margin: 5px;
+}
+
+.serverResponseLabelError {
+  color: red;
+}
+
