@@ -68,7 +68,7 @@
   (timer/start timer)
   @server)
 
-;; TODO load configuration (port, archive dir) from command line
+;; Start in standalone mode, load configuration (port, repo dir) from command line
 
 (defn -main [& args]
   (let [[params _ usage]
