@@ -17,8 +17,8 @@
 
 ;; Register actions and pages
 
-(def action-map (dispatch/find-symbols 'docr.frontend "-action"))
-(def page-map (dispatch/find-symbols 'docr.frontend "-page"))
+(def action-map (dispatch/find-symbols "-action" 'docr.frontend))
+(def page-map (dispatch/find-symbols "-page" 'docr.frontend))
 
 ;; Routing and Middleware
 
