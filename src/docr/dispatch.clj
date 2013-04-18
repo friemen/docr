@@ -42,11 +42,13 @@
 
 (defn find-symbols
   [suffix ns]
-  (into {} (map (fn [[sym var]]
-                  [(without-suffix (str sym) suffix) var])
-                (filter (fn [[sym var]]
-                          (.endsWith (str sym) suffix))
-                        (ns-publics ns)))))
+  (->> ns
+       ns-publics
+       (filter (fn [[sym var]]
+                 (.endsWith (str sym) suffix)))
+       (map (fn [[sym var]]
+              [(without-suffix (str sym) suffix) var]))
+       (into {})))
 
 (def mimetypes {"pdf"  "application/pdf"
                 "txt"  "text/plain"
