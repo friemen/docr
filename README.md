@@ -3,6 +3,8 @@ docr
 
 HTTP document browser for PDFs stored on a local share, written in Clojure.
 
+[![Build Status](https://travis-ci.org/friemen/docr.png?branch=master)](https://travis-ci.org/friemen/docr)
+
 I use it in my home network to find private documents that I scanned from paper or received in PDF format. 
 All documents are stored in a single folder.
 
@@ -25,3 +27,11 @@ To build and start DocR, clone this repo, cd into the project directory and type
     java -jar target/docr-1.0.0-standalone.jar -d ./sample-data -p 8085
 
 Then start a web browser and enter http://localhost:8085 to open the home page of DocR.
+
+
+License
+=======
+
+Copyright 2013 F.Riemenschneider
+
+Distributed under the Eclipse Public License, the same as Clojure.
