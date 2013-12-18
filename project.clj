@@ -1,4 +1,4 @@
-(defproject docr "1.0.0"
+(defproject docr "1.0.1"
   :description "My private document repo browser"
   :url "http://example.com/FIXME"
   :license {:name "Eclipse Public License"

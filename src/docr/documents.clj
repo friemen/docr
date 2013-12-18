@@ -83,15 +83,18 @@
         parts (split name #"__")]
     (when (= 3 (count parts))
       (let [[entity date subject] parts]
-        (Document. entity (dt/parse yyyy-mm-dd date) subject file)))))
+        (Document. entity (->> date .trim (dt/parse yyyy-mm-dd)) subject file)))))
 
 (defn- read-documents
   [dir]
   (->> dir
        file-seq
        (map parse-filename)
-       (filter #(not (nil? %)))))
+       (remove nil?)))
 
 (defn update-documents!
   []
-  (swap! docs (fn [_] (vec (read-documents repo-dir)))))
+  (try
+    (swap! docs (fn [_] (vec (read-documents repo-dir))))
+    (catch Exception ex (.printStackTrace ex)))
+  @docs)
