@@ -25,7 +25,7 @@
 (defn query-string [m]
   (->> (for [[k v] m]
          (str
-          (url-encode (if (keyword? k) (.substring (str k) 1)  k))
+          (url-encode (name k))
           "="
           (url-encode v)))
        (interpose "&")
