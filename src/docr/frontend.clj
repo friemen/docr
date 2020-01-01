@@ -1,10 +1,11 @@
 (ns docr.frontend
-  (:require [docr.dispatch :as dispatch]
-            [docr.documents :as docs])
-  (:use [clojure.tools.logging :only [debug]]
-        [hiccup core page form]
-        [clojure.string :only [split join]]
-        [docr.utils]))
+  (:require
+   [hiccup.util :as hiccup-util]
+   [docr.dispatch :as dispatch]
+   [docr.documents :as docs])
+  (:use
+   [hiccup core page form]
+   [docr.utils]))
 
 ;; Pages
 
@@ -15,7 +16,8 @@
      (render-link label image page {}))
   ([label image page params]
   (list
-   [:a {:href (dispatch/page-url page params)} [:img {:src image} label]]
+   [:a {:href (dispatch/page-url page params)}
+    [:img {:src (str hiccup-util/*base-url* image)} label]]
    [:span {:style "padding:30px"}])))
 
 (defn frame
@@ -27,7 +29,7 @@
            (render-link "Search documents" "/find.png" #'home-page)
            (render-link "Index by Date" "/calendar.png" #'index-page {:type "date"})
            (render-link "Index by Entity" "/user.png" #'index-page {:type "entity"})]
-          content])) 
+          content]))
 
 (defn- data-table-renderer
   [ & title-fn-pairs]
@@ -45,19 +47,19 @@
               first
               seq)]))))
 
-(def ^:private render-documents (data-table-renderer
-                                 ["Entity" (fn [doc]
-                                             (let [value (:entity doc)]
-                                               [:a {:href (dispatch/page-url
-                                                           #'index-page
-                                                           {:type "entity" :key value})}
-                                                value]))]
-                                 ["Date" (fn [doc] (-> doc :date format-date))]
-                                 ["Subject" :subject]
-                                 ["Action" (fn [doc]
-                                             [:a
-                                              {:href (str "/download/" (-> doc :file .getName))}
-                                              "Open"])]))
+(def ^:private render-documents
+  (data-table-renderer
+   ["Entity" (fn [doc]
+               (let [value (:entity doc)]
+                 [:a {:href (dispatch/page-url #'index-page
+                                               {:type "entity" :key value})}
+                  value]))]
+   ["Date" (fn [doc] (-> doc :date format-date))]
+   ["Subject" :subject]
+   ["Action" (fn [doc]
+               [:a
+                {:href (str hiccup-util/*base-url* "/download/" (-> doc :file .getName))}
+                "Open"])]))
 
 (defn- render-form
   "Creates a html form for a vector of fields and buttons.
@@ -100,8 +102,8 @@
           (list
            (if (->> [:entity :date-from :date-to :keyword]
                     (select-keys params)
-                    vals
-                    str
+                    (vals)
+                    (str)
                     (every? blank?))
              [:p [:b (count ds) " documents"]]
              [:p [:b "Filter active, result shows " (count ds) " documents."]])
@@ -109,14 +111,17 @@
 
 (defn- render-index
   [index]
-  (->> (docs/documents)
-         (map #(docs/iitem index %))
+  (let [items (->> (docs/documents)
+                   (map #(docs/iitem index %)))
+        freqs (frequencies items)]
+    (->> items
          (sort (docs/icomparator index))
-         frequencies
-         (map (fn [[item n]]
+         (distinct)
+         (map (fn [item]
                 [:span {:style "margin:5px"}
                  [:a {:href (dispatch/page-url #'index-page {:type (docs/itype index) :key item})}
-                  (if (> n 5) [:font {:size 4} item] item)]]))))
+                  (if (> (freqs item) 5) [:font {:size 4} item] item)]]))
+         (interpose " "))))
 
 (defn ^{:frame frame} index-page
   [params]
@@ -131,6 +136,3 @@
 (defn apply-filter-action
   [params]
   (dispatch/page-url #'home-page params))
-
-
-

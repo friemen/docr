@@ -1,8 +1,9 @@
 (ns docr.documents
-  (:require [clj-time.format :as dt])
-  (:use [clojure.tools.logging :only [debug]]
-        [clojure.string :only [split upper-case]]
-        [docr.utils]))
+  (:require
+   [clojure.string :as str]
+   [clj-time.format :as dt])
+  (:use
+   [docr.utils]))
 
 (defonce ^:pivate docs (atom []))
 
@@ -15,7 +16,7 @@
   [text v]
   (or (blank? text)
       (and (not (nil? v))
-           (.contains (upper-case v) (upper-case text)))))
+           (.contains (str/upper-case v) (str/upper-case text)))))
 
 (defn- value-in-range?
   [from to d]
@@ -56,7 +57,7 @@
              (itype [_] "entity")
              (ititle [_] "Index by Entities")
              (iitem [_ doc] (:entity doc))
-             (icomparator [_] #(compare %1 %2))
+             (icomparator [_] #(compare (str/lower-case %1) (str/lower-case %2)))
              (filter-by-index-key [_ key docs] (filter #(= key (:entity %)) docs)))
    :date (reify Index
            (itype [_] "date")
@@ -80,7 +81,7 @@
 (defn- parse-filename
   [file]
   (let [name (filename-without-ext file)
-        parts (split name #"__")]
+        parts (str/split name #"__")]
     (when (= 3 (count parts))
       (let [[entity date subject] parts]
         (Document. entity (->> date .trim (dt/parse yyyy-mm-dd)) subject file)))))
